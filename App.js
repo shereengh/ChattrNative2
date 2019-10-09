@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 
 //components
 import LoginForm from "./components/LoginForm";
+import AppContainer from "./components/Navigation";
 
 export default class App extends Component {
   constructor(props) {

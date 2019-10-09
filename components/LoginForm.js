@@ -14,6 +14,7 @@ import {
 
 import { connect } from "react-redux";
 import { login, signup, checkForExpiredToken, logout } from "../redux/actions";
+import Welcome from "./Welcome";
 
 class LoginForm extends Component {
   state = {
@@ -52,7 +53,7 @@ class LoginForm extends Component {
   FieldsView() {
     const { username, password } = this.state;
     if (this.props.user) {
-      return <H1 style={{ marginTop: 15, marginBottom: 15 }}>Welcome !</H1>;
+      return <Welcome />;
     } else {
       return (
         <View>
@@ -79,7 +80,6 @@ class LoginForm extends Component {
   }
 
   render() {
-    //console.log(this.state);
     return (
       <Container>
         <Header />

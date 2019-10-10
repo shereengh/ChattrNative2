@@ -1,1 +1,8 @@
-export { signup, login, logout, checkForExpiredToken } from "./authActions";
+export {
+  signup,
+  login,
+  logout,
+  checkForExpiredToken,
+  fetchChannels
+} from "./authActions";
+// export {  } from "./channels";

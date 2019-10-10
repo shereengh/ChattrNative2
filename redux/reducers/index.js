@@ -3,6 +3,7 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 import authReducer from "./authReducer";
+import channelReducer from "./channels";
 
 const middlewares = [thunk];
 
@@ -11,7 +12,8 @@ const enhancer = composeWithDevTools({
 })(applyMiddleware(...middlewares));
 
 const rootReducer = combineReducers({
-  rootAuth: authReducer
+  rootAuth: authReducer,
+  channels: channelReducer
 });
 
 const store = createStore(rootReducer, enhancer);

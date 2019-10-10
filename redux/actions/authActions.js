@@ -3,11 +3,29 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import { AsyncStorage } from "react-native";
 
+import { FETCH_CHANNELS } from "./types";
+
 const instance = axios.create({
   baseURL: "https://api-chatr.herokuapp.com/"
 });
+export const fetchChannels = () => {
+  console.log("In Fetching");
+  return async dispatch => {
+    try {
+      const res = await instance.get("channels/");
+      const channels = res.data;
+      dispatch({
+        type: FETCH_CHANNELS,
+        payload: channels
+      });
+    } catch (error) {
+      console.error(error);
+      dispatch(setErrors(error));
+    }
+  };
+};
 
-export const checkForExpiredToken = navigation => {
+export const checkForExpiredToken = () => {
   return async dispatch => {
     // Get token
     const token = await AsyncStorage.getItem("token");
@@ -23,7 +41,7 @@ export const checkForExpiredToken = navigation => {
       // Check token expiration
       if (user.exp >= currentTime) {
         // Set auth token header
-        setAuthToken(token);
+        await dispatch(setAuthToken(token));
         // Set user
         dispatch(setCurrentUser(user));
       } else {
@@ -33,14 +51,18 @@ export const checkForExpiredToken = navigation => {
   };
 };
 
-const setAuthToken = async token => {
-  if (token) {
-    await AsyncStorage.setItem("token", token);
-    axios.defaults.headers.common.Authorization = `jwt ${token}`;
-  } else {
-    await AsyncStorage.removeItem("token");
-    delete axios.defaults.headers.common.Authorization;
-  }
+const setAuthToken = token => {
+  return async dispatch => {
+    if (token) {
+      await AsyncStorage.setItem("token", token);
+      instance.defaults.headers.common.Authorization = `jwt ${token}`;
+      console.log(fetchChannels());
+      dispatch(fetchChannels());
+    } else {
+      await AsyncStorage.removeItem("token");
+      delete instance.defaults.headers.common.Authorization;
+    }
+  };
 };
 
 const setCurrentUser = user => ({
@@ -56,7 +78,6 @@ export const login = (userData, navigation) => {
       let decodedUser = jwt_decode(user.token);
       setAuthToken(user.token);
       dispatch(setCurrentUser(decodedUser));
-      //navigation.replace("Profile");
     } catch (error) {
       console.error(error);
     }
@@ -75,6 +96,8 @@ export const signup = (userData, navigation) => {
 };
 
 export const logout = () => {
-  setAuthToken();
-  return setCurrentUser();
+  return dispatch => {
+    dispatch(setAuthToken());
+    dispatch(setCurrentUser());
+  };
 };

@@ -9,7 +9,11 @@ import { Provider } from "react-redux";
 
 //components
 import LoginForm from "./components/LoginForm";
-import AppContainer from "./components/Navigation";
+import Welcome from "./components/Welcome";
+import AppContainer from "./Navigation";
+import { checkForExpiredToken } from "./redux/actions";
+
+store.dispatch(checkForExpiredToken());
 
 export default class App extends Component {
   constructor(props) {
@@ -35,7 +39,7 @@ export default class App extends Component {
 
     return (
       <Provider store={store}>
-        <LoginForm />
+        <AppContainer />
       </Provider>
     );
   }

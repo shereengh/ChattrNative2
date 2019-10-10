@@ -12,32 +12,21 @@ import {
   Title,
   Left,
   Icon,
-  Right
+  Right,
+  View,
+  H1
 } from "native-base";
-
+import { connect } from "react-redux";
 class Welcome extends React.Component {
   render() {
     return (
       <Container>
-        <Header>
-          <Left>
-            <Button
-              transparent
-              onPress={() => this.props.navigation.navigate("DrawerOpen")}
-            >
-              <Icon name="menu" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>HomeScreen</Title>
-          </Body>
-          <Right />
-        </Header>
         <Content padder>
           <Card>
             <CardItem>
               <View>
                 <H1>Welcome {this.props.user.username}!</H1>
+                {console.log("user", this.props.user.username)}
               </View>
             </CardItem>
           </Card>
@@ -49,15 +38,6 @@ class Welcome extends React.Component {
             onPress={() => this.props.navigation.navigate("ChannelsScreen")}
           >
             <Text>List of Channels</Text>
-          </Button>
-          <Button
-            full
-            rounded
-            primary
-            style={{ marginTop: 10 }}
-            onPress={() => this.props.navigation.navigate("CreateScreen")}
-          >
-            <Text>Create a Channel</Text>
           </Button>
         </Content>
       </Container>
